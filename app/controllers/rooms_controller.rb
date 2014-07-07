@@ -15,6 +15,10 @@ class RoomsController < ApplicationController
   # GET /rooms/new
   def new
     @room = Room.new
+
+    if session[:user].blank?
+      redirect_to new_user_path
+    end
   end
 
   # GET /rooms/1/edit
