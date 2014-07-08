@@ -1,0 +1,26 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @room.name %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <ul>
+    <% Mapping.where(room: @room.id).each do |mapping| %>
+      <li><%= User.find(mapping.user).name %></li>
+    <% end %>
+  </ul>
+</p>
+
+<p>
+  <%= radio_button :radio, :card, '1' %>1
+  <%= radio_button :radio, :card, '2' %>2
+  <%= radio_button :radio, :card, '3' %>3
+  <%= radio_button :radio, :card, '5' %>5
+  <%= radio_button :radio, :card, '8' %>8
+  <%= radio_button :radio, :card, '13' %>13
+</p>
+
+<%= button_to 'Leave', leave_room_path(:id => @room.id) %>

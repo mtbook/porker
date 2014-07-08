@@ -1,5 +1,5 @@
 class RoomsController < ApplicationController
-  before_action :set_room, only: [:show, :edit, :update, :destroy]
+  before_action :set_room, only: [:show, :edit, :update, :destroy, :enter, :leave]
 
   # GET /rooms
   def index
@@ -34,6 +34,19 @@ class RoomsController < ApplicationController
         format.html { render :new }
       end
     end
+  end
+
+  # POST /rooms/enter
+  def enter
+    @mapping = Mapping.new(user: session[:user], room: @room.id)
+    @mapping.save
+  end
+
+  # POST /rooms/leave
+  def leave
+    Mapping.destroy_all(user: session[:user], room: @room.id)
+
+    redirect_to rooms_path
   end
 
   # PATCH/PUT /rooms/1

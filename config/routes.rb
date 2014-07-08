@@ -3,6 +3,12 @@ Rails.application.routes.draw do
 
   resources :rooms
 
+  root 'rooms#index'
+
+  post 'rooms/enter' => 'rooms#enter', as: :enter_room
+
+  post 'rooms/leave' => 'rooms#leave', as: :leave_room
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

@@ -13,10 +13,9 @@
     <% @rooms.each do |room| %>
       <tr>
         <td><%= room.name %></td>
-        <td><%= room.limit %></td>
+        <td><%= Mapping.where(room: room.id).count %>/<%= room.limit %></td>
         <td><%= link_to 'Show', room %></td>
-        <td><%= link_to 'Edit', edit_room_path(room) %></td>
-        <td><%= link_to 'Destroy', room, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= button_to 'Enter', enter_room_path(:id => room.id) %></td>
       </tr>
     <% end %>
   </tbody>
