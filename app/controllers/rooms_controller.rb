@@ -3,7 +3,7 @@ class RoomsController < ApplicationController
 
   # GET /rooms
   def index
-    @rooms = Room.all
+    @room = Room.find(session['room'])
   end
 
   # GET /rooms/1
@@ -27,12 +27,10 @@ class RoomsController < ApplicationController
   def create
     @room = Room.new(room_params)
 
-    respond_to do |format|
-      if @room.save
-        format.html { redirect_to @room, notice: 'Room was successfully created.' }
-      else
-        format.html { render :new }
-      end
+    if @room.save
+      redirect_to @room, notice: 'Room was successfully created.'
+    else
+      render :new
     end
   end
 
@@ -40,32 +38,34 @@ class RoomsController < ApplicationController
   def enter
     @mapping = Mapping.new(user: session[:user], room: @room.id)
     @mapping.save
+
+    session['room'] = @room.id
+
+    redirect_to rooms_path
   end
 
   # POST /rooms/leave
   def leave
     Mapping.destroy_all(user: session[:user], room: @room.id)
 
-    redirect_to rooms_path
+    session.delete('room')
+
+    redirect_to root_path
   end
 
   # PATCH/PUT /rooms/1
   def update
-    respond_to do |format|
-      if @room.update(room_params)
-        format.html { redirect_to @room, notice: 'Room was successfully updated.' }
-      else
-        format.html { render :edit }
-      end
+    if @room.update(room_params)
+      redirect_to @room, notice: 'Room was successfully updated.'
+    else
+      render :edit
     end
   end
 
   # DELETE /rooms/1
   def destroy
     @room.destroy
-    respond_to do |format|
-      format.html { redirect_to rooms_url, notice: 'Room was successfully destroyed.' }
-    end
+    redirect_to rooms_url, notice: 'Room was successfully destroyed.'
   end
 
   private

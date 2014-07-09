@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
+  root 'homes#index'
+
   resources :users
 
   resources :rooms
-
-  root 'rooms#index'
 
   post 'rooms/enter' => 'rooms#enter', as: :enter_room
 
